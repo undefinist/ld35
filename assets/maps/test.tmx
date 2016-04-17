@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="20">
+ <objectgroup name="Objects">
+  <object id="3" type="Ring" x="128" y="1328" width="16" height="32"/>
+  <object id="4" type="Player" x="32" y="1520" width="16" height="16" rotation="-90"/>
+  <object id="10" x="0" y="1600">
+   <polyline points="0,0 96,0 128,-32 144,-32 176,0 272,0 272,-256 204,-320 64,-320 0,-256 0,-176 0,0"/>
+  </object>
+  <object id="13" x="80" y="1504">
+   <polyline points="0,0 16,-16 32,0 16,16 0,0"/>
+  </object>
+  <object id="14" x="160" y="1504">
+   <polyline points="0,0 16,-16 32,0 16,16 0,0"/>
+  </object>
+  <object id="16" x="48" y="1424">
+   <polyline points="0,0 16,-16 32,0 16,16 0,0 -48,0"/>
+  </object>
+  <object id="17" x="224" y="1424">
+   <polyline points="0,0 -16,-16 -32,0 -16,16 0,0 48,0"/>
+  </object>
+  <object id="18" type="Ring" x="128" y="1520" width="16" height="32"/>
+ </objectgroup>
+</map>

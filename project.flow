@@ -1,0 +1,38 @@
+{
+
+  luxe:{
+    window: {
+      width:960,
+      height:640,
+      title:'ld35',
+      fullscreen:false,
+      resizable:true,
+      borderless:false
+    }
+  },
+
+  project : {
+    name : 'ld35',
+    version : '1.0.0',
+    author : 'undefinist',
+
+    app : {
+      name : 'ld35',
+      package : 'com.undefinist.ld35',
+      main : 'Main',
+      codepaths: ['src', 'src/components']
+    },
+
+    build : {
+      dependencies : {
+        luxe : '*',
+      }
+    },
+
+    files : {
+      assets : 'assets/'
+    }
+
+  }
+
+}
