@@ -11,11 +11,18 @@ class Wall extends Visual
 
 	private var wallColor:luxe.Color = new luxe.Color().rgb(0x541111);
 
-	public function new(pos:Vector, points:Array<Vector>)
+	public function new(pos:Vector, points:Array<Vector>, type:Int)
 	{
 		for(p in points)
 		{
 			p.add(pos);
+		}
+
+		var tag = "Wall";
+		if(type != 0)
+		{
+			tag += type == 1 ? "A" : "B";
+			wallColor = type == 1 ? Player.COLOR_A : Player.COLOR_B;
 		}
 
 		super({
@@ -31,7 +38,7 @@ class Wall extends Visual
 			var p = points[i];
 			var poly:Polygon = new Polygon(0, 0, [last, p]);
 			add(new Collider({
-				tag: "Map",
+				tag: tag,
 				trigger: true,
 				shape: poly
 			}));

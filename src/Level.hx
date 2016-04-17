@@ -47,7 +47,12 @@ class Level
 
 				if(o.object_type == TiledObjectType.polyline)
 				{
-					objects.push(new Wall(o.pos, o.polyobject.points));
+					var type:Int = 0;
+					if(group.name == "a")
+						type = 1;
+					else if(group.name == "b")
+						type = 2;
+					objects.push(new Wall(o.pos, o.polyobject.points, type));
 				}
 				else if(o.type == "Player")
 				{
@@ -57,6 +62,10 @@ class Level
 				{
 					objects.push(new Ring(o.pos, o.rotation));
 					ringsLeft++;
+				}
+				else if(o.type == "Portal")
+				{
+					objects.push(new Portal(o.name, o.pos, o.properties.get("Link")));
 				}
 			}
 		}

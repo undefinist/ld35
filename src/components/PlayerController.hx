@@ -57,7 +57,7 @@ class PlayerController extends Rigidbody
 			wiggleTime += dt;
 		}
 		angularVelocity = Maths.clamp(angularVelocity, -ANGULAR_VELOCITY_MAX, ANGULAR_VELOCITY_MAX);
-		var wiggle = wiggleTime < 0 ? 0 : Math.sin(wiggleTime * Math.PI * 4) * 90;
+		var wiggle = wiggleTime < 0 ? 0 : Math.cos(wiggleTime * Math.PI * 4) * 90;
 
 		angle += (angularVelocity + wiggle) * dt;
 		angle = Maths.wrap_angle(angle, 0, 360);
@@ -69,8 +69,10 @@ class PlayerController extends Rigidbody
 			if(tailDir.lengthsq < 16 * 16)
 			{
 				var angleToTail = Maths.wrap_angle(Maths.degrees(tailDir.angle2D), 0, 360);
-				angle += (angleToTail - angle) * dt * 4;
-
+				var diff = angleToTail - angle;
+				if(diff < -180) diff += 360;
+				if(diff > 180) diff -= 360;
+				angle += diff * dt * 4;
 			}
 		}
 

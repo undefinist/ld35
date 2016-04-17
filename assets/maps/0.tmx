@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="5">
+ <objectgroup name="Object Layer 1">
+  <object id="1" x="0" y="1520">
+   <polyline points="16,0 144,0 176,-32 208,-32 240,0 368,0 384,16 384,32 368,48 240,48 208,80 176,80 144,48 16,48 0,32 0,16 16,0"/>
+  </object>
+  <object id="2" type="Player" x="192" y="1536" width="16" height="16"/>
+  <object id="3" name="0" type="Portal" x="352" y="1536" width="16" height="16">
+   <properties>
+    <property name="Link" value="portal_1"/>
+   </properties>
+  </object>
+  <object id="4" name="portal_1" type="Portal" x="16" y="1536" width="16" height="16"/>
+ </objectgroup>
+</map>

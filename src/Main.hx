@@ -12,7 +12,8 @@ class Main extends luxe.Game
     {
         config.preload.textures.push({ id: "assets/ring.png" } );
         config.preload.textures.push({ id: "assets/tileset.png" } );
-        config.preload.texts.push({ id: "assets/maps/test.tmx" } );
+        for(i in 0...5)
+            config.preload.texts.push({ id: 'assets/maps/$i.tmx' } );
 
         return config;
 
@@ -25,7 +26,7 @@ class Main extends luxe.Game
         Luxe.input.bind_key("left", Key.left);
         Luxe.input.bind_key("left", Key.key_a);
         Luxe.input.bind_key("right", Key.right);
-        Luxe.input.bind_key("right", Key.key_d);
+        Luxe.input.bind_key("right", Key.key_d);p
 
         Luxe.renderer.clear_color = new luxe.Color().rgb(0x5E1C2B);
 
@@ -39,7 +40,7 @@ class Main extends luxe.Game
         world = Luxe.physics.add_engine(World);
         world.paused = false;
 
-        level = new Level("test");
+        level = new Level("0");
     }
 
     override function onkeyup( e:KeyEvent ) {
@@ -86,7 +87,8 @@ class Main extends luxe.Game
     {
         if(win)
         {
-            trace("WIN");
+            level.destroy();
+            level = new Level(Std.string(Std.parseInt(level.name) + 1));
         }
         else
         {
