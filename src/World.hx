@@ -69,6 +69,8 @@ class World extends PhysicsEngine
 		handlePhysics();
 		updateTransforms();
 		handleOverlaps();
+		updateTransforms();
+		handleOverlaps();
 	}
 
 	public function handlePhysics()
@@ -88,8 +90,8 @@ class World extends PhysicsEngine
 		{
 			if (!rb.enabled)
 				continue;
-			rb.transform.pos.x += rb.velocity.x * Luxe.physics.step_delta;
-			rb.transform.pos.y += rb.velocity.y * Luxe.physics.step_delta;
+			rb.transform.pos.x += rb.velocity.x * Luxe.physics.step_delta * 0.5;
+			rb.transform.pos.y += rb.velocity.y * Luxe.physics.step_delta * 0.5;
 		}
 	}
 

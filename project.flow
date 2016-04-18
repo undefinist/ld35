@@ -26,7 +26,8 @@
     build : {
       dependencies : {
         luxe : '*',
-      }
+      },
+      defines: [ "no_debug_console" ]
     },
 
     files : {

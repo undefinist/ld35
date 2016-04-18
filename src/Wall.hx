@@ -17,6 +17,7 @@ class Wall extends Visual
 		{
 			p.add(pos);
 		}
+		points = Utils.smoothPath(points, 4, 4);
 
 		var tag = "Wall";
 		if(type != 0)

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="10">
+ <objectgroup name="Object Layer 1">
+  <object id="1" x="16" y="1472">
+   <polyline points="0,0 -16,16 0,32 176,32 192,48 176,144 160,160 160,192 192,224 224,224 256,192 256,160 240,144 224,48 240,32 400,32 416,16 400,0 240,0 224,-16 240,-112 256,-128 256,-160 224,-192 192,-192 160,-160 160,-128 176,-112 192,-16 176,0 0,0"/>
+  </object>
+  <object id="2" type="Player" x="96" y="1480" width="16" height="16"/>
+  <object id="3" type="Ring" x="216" y="1288" width="16" height="16"/>
+  <object id="4" type="Ring" x="216" y="1672" width="16" height="16"/>
+  <object id="7" name="portal_1" type="Portal" x="16" y="1480" width="16" height="16"/>
+  <object id="9" name="portal_0" type="Portal" x="400" y="1480" width="16" height="16">
+   <properties>
+    <property name="Link" value="portal_1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

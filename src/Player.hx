@@ -17,11 +17,11 @@ class Player extends luxe.Visual
 	public static var COLOR_A = new Color().rgb(0x47962d);
 	public static var COLOR_B = new Color().rgb(0x1e6d5d);
 
+	public var controller(default, null):PlayerController;
+
 	private var points:Array<Vector>;
 	private var body:PlayerBody;
 	private var bodies:Array<PlayerBody> = [];
-
-	private var controller:PlayerController;
 
 	private var currentColor:Color = COLOR_A;
 	private var lerpColor:Color;
@@ -116,7 +116,7 @@ class Player extends luxe.Visual
 			bodies.push(body);
 		}
 		else
-			body.extend(bodyLeft, bodyRight, color, points.length > 4);
+			body.extend(bodyLeft, bodyRight, color, points.length > 4, controller.colorState);
 	}
 
 	public function splitBody(newPos:Vector)
@@ -149,17 +149,20 @@ class Player extends luxe.Visual
 
 	private function onCollide(collided:Collider)
 	{
-		trace(collided);
 		if(invulnerable)
 			return;
 
-		if(collided.tag == "Wall" || collided.tag == "Body")
+		if(collided.tag == "Wall")
 			endState = -1;
-		else if(collided.tag == "Tail")
-			endState = Level.ringsLeft == 0 ? 1 : -1;
+		else if(collided.tag == "Tail" && Level.ringsLeft == 0)
+			endState = 1;
 		else if(collided.tag == "WallA" && !controller.colorState)
 			endState = -1;
 		else if(collided.tag == "WallB" && controller.colorState)
+			endState = -1;
+		else if(collided.tag == "BodyA" && !controller.colorState)
+			endState = -1;
+		else if(collided.tag == "BodyB" && controller.colorState)
 			endState = -1;
 	}
 
@@ -185,7 +188,7 @@ class PlayerBody extends luxe.Visual
 		lastPos = startPoint;
 	}
 
-	public function extend(bodyLeft:Vector, bodyRight:Vector, color:Color, collide:Bool)
+	public function extend(bodyLeft:Vector, bodyRight:Vector, color:Color, collide:Bool, colorState:Bool)
 	{
 		var i = geometry.vertices.length >> 1;
 		geometry.vertices.push(new Vertex(bodyLeft, color));
@@ -201,7 +204,7 @@ class PlayerBody extends luxe.Visual
 		add(new Collider({
 			shape: new Polygon(0, 0, [lastPos, newPos]),
 			trigger: true,
-			tag: "Body"
+			tag: "Body" + (colorState ? "A" : "B")
 		}));
 
 		lastPos = newPos;

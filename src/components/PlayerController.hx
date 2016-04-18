@@ -33,7 +33,13 @@ class PlayerController extends Rigidbody
 
 	override public function update(dt:Float)
 	{
+		var input = 0;
 		if(Luxe.input.inputdown("left"))
+			input--;
+		if(Luxe.input.inputdown("right"))
+			input++;
+
+		if(input < 0)
 		{
 			colorState = false;
 			wiggleTime = -WIGGLE_DELAY;
@@ -42,7 +48,7 @@ class PlayerController extends Rigidbody
 			else
 				angularVelocity -= dt * ANGULAR_ACCELERATION;
 		}
-		else if(Luxe.input.inputdown("right"))
+		else if(input > 0)
 		{
 			colorState = true;
 			wiggleTime = -WIGGLE_DELAY;
@@ -63,16 +69,16 @@ class PlayerController extends Rigidbody
 		angle = Maths.wrap_angle(angle, 0, 360);
 
 		time += dt;
-		if(time > 1)
+		if(time > 1 && Level.ringsLeft == 0)
 		{
 			var tailDir = tail.clone().subtract(pos);
-			if(tailDir.lengthsq < 16 * 16)
+			if(tailDir.lengthsq < 32 * 32)
 			{
 				var angleToTail = Maths.wrap_angle(Maths.degrees(tailDir.angle2D), 0, 360);
 				var diff = angleToTail - angle;
 				if(diff < -180) diff += 360;
 				if(diff > 180) diff -= 360;
-				angle += diff * dt * 4;
+				angle += diff * dt * 8;
 			}
 		}
 

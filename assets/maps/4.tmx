@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="12">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="14">
  <objectgroup name="Object Layer 1">
-  <object id="2" type="Player" x="16" y="1424" width="16" height="16"/>
-  <object id="3" name="0" type="Portal" x="128" y="1312" width="16" height="16">
-   <properties>
-    <property name="Link" value="portal_1"/>
-   </properties>
+  <object id="1" x="64" y="1104">
+   <polyline points="0,16 16,0 80,0 96,16 96,208 80,224 16,224 0,208 0,16"/>
   </object>
-  <object id="4" name="portal_1" type="Portal" x="16" y="1536" width="16" height="16"/>
-  <object id="7" x="0" y="1536">
-   <polyline points="0,0 0,16 16,32 32,32 48,16 48,-64 64,-80 144,-80 160,-96 160,-224 144,-240 128,-240 112,-224 112,-144 96,-128 16,-128 0,-112 0,0"/>
+  <object id="9" type="Player" x="80" y="1296" width="16" height="16"/>
+  <object id="12" x="112" y="1120">
+   <polyline points="0,16 0,176"/>
   </object>
  </objectgroup>
- <objectgroup color="#44a46f" name="a">
-  <object id="9" x="0" y="1488">
-   <polyline points="0,0 48,0"/>
-  </object>
- </objectgroup>
- <objectgroup color="#4183fd" name="b">
-  <object id="10" x="160" y="1376">
-   <polyline points="0,0 -48,0"/>
+ <objectgroup color="#55aaff" name="b">
+  <object id="13" x="160" y="1264">
+   <polyline points="32,-16 -128,-80"/>
   </object>
  </objectgroup>
 </map>

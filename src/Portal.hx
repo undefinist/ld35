@@ -45,6 +45,10 @@ class Portal extends luxe.Sprite
 			return;
 		var link:luxe.Sprite = Luxe.scene.get(link);
 		player.splitBody(link.pos);
+        var rad = player.controller.angle * Math.PI / 180;
+        var forward = new Vector(Math.cos(rad), Math.sin(rad)).multiplyScalar(32);
+        var screen = Luxe.screen.size.clone().multiplyScalar(0.5);
+        Luxe.camera.pos.copy_from(player.pos).subtract(screen).add(forward);
 	}
 
 }

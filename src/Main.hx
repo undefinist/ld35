@@ -1,4 +1,6 @@
+package;
 
+import phoenix.Vector;
 import luxe.Input;
 
 class Main extends luxe.Game
@@ -7,12 +9,14 @@ class Main extends luxe.Game
     var world:World;
     var level:Level;
     var playerDead:Bool = false;
+    var playerAngle:Float;
+    var cameraRot:Float;
+    var transitionTime:Float = 0;
+    var transitionText:phoenix.geometry.TextGeometry;
 
     override function config(config:luxe.AppConfig)
     {
-        config.preload.textures.push({ id: "assets/ring.png" } );
-        config.preload.textures.push({ id: "assets/tileset.png" } );
-        for(i in 0...5)
+        for(i in 0...11)
             config.preload.texts.push({ id: 'assets/maps/$i.tmx' } );
 
         return config;
@@ -22,15 +26,18 @@ class Main extends luxe.Game
     override function ready()
     {
         //Luxe.update_rate = 1 / 60;
+        //
+        //
+
 
         Luxe.input.bind_key("left", Key.left);
         Luxe.input.bind_key("left", Key.key_a);
         Luxe.input.bind_key("right", Key.right);
-        Luxe.input.bind_key("right", Key.key_d);p
+        Luxe.input.bind_key("right", Key.key_d);
 
         Luxe.renderer.clear_color = new luxe.Color().rgb(0x5E1C2B);
 
-        Luxe.camera.zoom = 3;
+        Luxe.camera.zoom = 4;
 
         // trace(Luxe.camera.rotation.toeuler());
         // Luxe.camera.rotation.setFromRotationMatrix(phoenix.Matrix.MatrixTransform)
@@ -41,6 +48,12 @@ class Main extends luxe.Game
         world.paused = false;
 
         level = new Level("0");
+        cameraRot = 0;
+        playerAngle = level.player.controller.angle;
+        var rad = playerAngle * Math.PI / 180;
+        var forward = new Vector(Math.cos(rad), Math.sin(rad)).multiplyScalar(32);
+        var screen = Luxe.screen.size.clone().multiplyScalar(0.5);
+        Luxe.camera.pos.copy_from(level.player.pos).subtract(screen).add(forward);
     }
 
     override function onkeyup( e:KeyEvent ) {
@@ -57,6 +70,14 @@ class Main extends luxe.Game
 
     override function update(dt:Float)
     {
+        if(transitionTime > 0)
+        {
+            transitionTime -= dt;
+            if(transitionTime < 0)
+                restartLevel();
+            return;
+        }
+
         if(Luxe.camera.shaking)
         {
         }
@@ -67,7 +88,23 @@ class Main extends luxe.Game
 
         if(!world.paused)
         {
-            Luxe.camera.pos.copy_from(level.player.pos).subtract(new phoenix.Vector(480, 320));
+    		var input = 0;
+    		if(Luxe.input.inputdown("left"))
+    			input--;
+    		if(Luxe.input.inputdown("right"))
+    			input++;
+
+            var rot = input * Math.PI * 0.1;
+            cameraRot = luxe.utils.Maths.weighted_avg(cameraRot, rot, 30);
+            Luxe.camera.rotation.setFromEuler(new Vector(0, 0, cameraRot));
+
+            if(input != 0)
+                playerAngle = level.player.controller.angle;
+    		var rad = playerAngle * Math.PI / 180;
+    		var forward = new Vector(Math.cos(rad), Math.sin(rad)).multiplyScalar(32);
+            var screen = Luxe.screen.size.clone().multiplyScalar(0.5);
+            var pos = level.player.pos.clone().subtract(screen).add(forward);
+            Luxe.camera.pos.weighted_average_xy(pos.x, pos.y, 10);
         }
         if(playerDead)
         {
@@ -79,21 +116,50 @@ class Main extends luxe.Game
     private function restartLevel()
     {
         world.paused = false;
-        level.destroy();
+        if(level.player != null)
+            level.destroy();
         level = new Level(level.name);
+
+        cameraRot = 0;
+        Luxe.camera.rotation.setFromEuler(new Vector(0, 0, cameraRot));
+        playerAngle = level.player.controller.angle;
+        var rad = playerAngle * Math.PI / 180;
+        var forward = new Vector(Math.cos(rad), Math.sin(rad)).multiplyScalar(32);
+        var screen = Luxe.screen.size.clone().multiplyScalar(0.5);
+        Luxe.camera.pos.copy_from(level.player.pos).subtract(screen).add(forward);
     }
 
     private function onPlayerEnd(win:Bool)
     {
         if(win)
         {
+            level.name = Std.string(Std.parseInt(level.name) + 1);
             level.destroy();
-            level = new Level(Std.string(Std.parseInt(level.name) + 1));
+            Luxe.camera.rotation.setFromEuler(new Vector(0, 0, 0));
+            if(transitionText == null)
+                transitionText = Luxe.draw.text( {
+                    text: "OUROBOROS",
+                    point_size: 32,
+                    bounds: Luxe.screen.bounds.clone(),
+                    align: 2,
+                    align_vertical: 2,
+                    color: new luxe.Color().rgb(0x541111)
+                });
+            transitionText.visible = true;
+            transitionTime = 0.5;
+            Luxe.camera.pos.set_xy(0, 0);
+
+            if(level.name == "11")
+            {
+                transitionTime = 99999;
+                transitionText.text = "end :(";
+                transitionText.point_size = 16;
+            }
         }
         else
         {
             world.paused = true;
-            Luxe.camera.shake(16);
+            Luxe.camera.shake(12);
         }
     }
 

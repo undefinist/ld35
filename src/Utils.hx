@@ -10,10 +10,12 @@ class Utils
 	{
 		var dirs:Array<Vector> = [];
 		var last = points[0];
+
 		for(i in 1...points.length)
 		{
 			var p = points[i];
-			dirs.push(p.clone().subtract(last).normalize());
+			var dir = p.clone().subtract(last);
+			dirs.push(dir.normalize());
 			last = p;
 		}
 
@@ -51,6 +53,50 @@ class Utils
 		return Luxe.draw.poly( {
 			points: drawPts,
 			primitive_type: phoenix.Batcher.PrimitiveType.triangle_strip} );
+	}
+
+	public static function smoothPath(points:Array<Vector>, steps:Int, segments:Int)
+	{
+		var dirs:Array<Vector> = [];
+		var last = points[0];
+		var pts = [];
+		var i0 = 1;
+
+		for(i in i0...points.length)
+		{
+			var p = points[i];
+			var dir = p.clone().subtract(last);
+			pts.push(last);
+			for(j in 1...segments)
+			{
+				pts.push(last.clone().add(dir.clone().multiplyScalar(j / segments)));
+			}
+			last = p;
+		}
+		pts.push(last);
+		points = pts;
+
+		var closed = points[0].equals(last);
+
+		while(steps-- > 0)
+		{
+			pts = [];
+			last = points[0];
+			if(!closed)
+				pts.push(last);
+			for(i in 1...points.length)
+			{
+				pts.push(points[i].clone().add(last).multiplyScalar(0.5));
+				last = points[i];
+			}
+			if(closed)
+				pts.push(pts[0]);
+			else
+				pts.push(last);
+			points = pts;
+		}
+
+		return points;
 	}
 
 }
